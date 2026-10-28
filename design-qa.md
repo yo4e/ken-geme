@@ -62,3 +62,13 @@ Iteration 2/3 final evidence is the combined comparison and focused crops listed
 The explicit production browser-game requirement overrides the mobile-app prototype shell. A responsive browser game uses the Product Design web starter with no simulated phone chrome. The user's headless/background preference supplies authorization for headless browser testing and avoids occupying their desktop.
 
 Final close-up review confirmed the red input border, error CTA rhythm, small helper copy, map boundaries and decoded food assets. The final-answer save timing was then tightened so the record is persisted immediately on the 47th correct answer, before the result button; completion/save browser tests were rerun in both engines (6/6 passed). This did not change the rendered design.
+
+## Approved usability update — 2026-10-28
+
+Added an outlined result-share button within the existing result hierarchy, a compact muted hamburger menu containing only the two host-site links, and a small desktop Enter hint. The approved question/error/correct layout and rules remain intact. Icons reuse the same heavy 県 glyph and orange Seal; checked the 512px source and 32/180/192/512px browser-loaded files. A padded maskable variant is included.
+
+`work/screenshots/share-result-*-*.png` and `share-fallback-*-*.png` capture the result and manual-copy fallback at 320/390/1280px in Chromium/WebKit. Share cancellation does not copy, repeated clicks cannot open multiple share sheets, and unavailable sharing/clipboard access remains usable. The browser API is mocked for native-sheet success/cancellation/error tests, with a real user click and active user activation; the OS destination UI is not operated by headless tests.
+
+Keyboard tests cover held Enter, non-repeat duplicate events while held, IME confirmation, an immediate post-submit Enter, modifier keys, focused next button, wrong-answer confirmation, and reveal-to-next. The full existing 24-test suite passed before the menu addition; all 8 update tests passed after the menu addition. Unit tests total 9; build and 4 packaging tests passed. The additions preserve the original map and answer data.
+
+Final update verification: all 26 browser tests and 9 unit tests passed. The 390px result and manual fallback captures were inspected; the outlined share button remains distinct from the blue retry action, and the small menu does not shift the existing brand. No outstanding P0/P1/P2 findings.

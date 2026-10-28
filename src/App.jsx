@@ -1,6 +1,8 @@
 import React,{useState,useRef,useEffect} from 'react';
 import {Seal,Timer,CheckCircle,XCircle,CaretRight,Trophy,ArrowUUpLeft,BookOpen} from '@phosphor-icons/react';
 import {prefectures,TOKYO_NOTE} from './data.js';
+import {ResultShare} from './ResultShare.jsx';
+import {GameMenu} from './GameMenu.jsx';
 import {newGame,current,transition,elapsedTime,formatTime,readScores,saveScore} from './game.js';
 const asset=path=>`${import.meta.env.BASE_URL}${path}`;
 function storage(){try{return window.localStorage;}catch{return null;}}
@@ -16,6 +18,25 @@ export function App(){
  const [scores,setScores]=useState(()=>readScores(storage()));
  const [record,setRecord]=useState(null);const composing=useRef(false);const compositionEnd=useRef(-Infinity);
  const inputRef=useRef(null);const mainRef=useRef(null);
+ const enterDown=useRef(false),feedbackAt=useRef(-Infinity);
+ useEffect(()=>{
+  function keydown(event){
+   if(event.key!=='Enter')return;
+   const held=enterDown.current;enterDown.current=true;
+   const stage=gameRef.current?.stage;
+   if(!['correct','reveal'].includes(stage))return;
+   const control=event.target.closest?.('button,a,input,textarea,select,summary,[contenteditable]');
+   if(control&&!control.hasAttribute('data-advance'))return;
+   if(event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return;
+   event.preventDefault();
+   if(held||event.repeat||event.isComposing||event.keyCode===229||composing.current||performance.now()-compositionEnd.current<80||performance.now()-feedbackAt.current<180)return;
+   act({type:'next'});
+  }
+  function keyup(event){if(event.key==='Enter')enterDown.current=false;}
+  function blur(){enterDown.current=false;}
+  window.addEventListener('keydown',keydown,true);window.addEventListener('keyup',keyup,true);window.addEventListener('blur',blur);
+  return()=>{window.removeEventListener('keydown',keydown,true);window.removeEventListener('keyup',keyup,true);window.removeEventListener('blur',blur);};
+ },[]);
  useEffect(()=>{if(game?.stage!=='question')return;const id=setInterval(()=>setTick(performance.now()),100);return()=>clearInterval(id);},[game?.stage,game?.queue[0]]);
  useEffect(()=>{if(!game)return;if(game.stage==='question'){inputRef.current?.focus({preventScroll:true});}else{mainRef.current?.focus({preventScroll:true});}window.scrollTo({top:0,behavior:'instant'});},[game?.stage,game?.queue[0]]);
  function start(){const g=newGame(mode,performance.now());gameRef.current=g;setGame(g);setTick(performance.now());setInput('');setRecord(null);setScreen('game');}
@@ -23,21 +44,22 @@ export function App(){
   const previous=gameRef.current;if(!previous)return;
   const next=transition(previous,action,performance.now());
   if(next===previous)return;
+  if(next.stage!==previous.stage&&['correct','reveal'].includes(next.stage))feedbackAt.current=performance.now();
   gameRef.current=next;setGame(next);setEmpty(false);
   if(action.type==='next')setInput('');
   if(next.stage==='correct' && next.solved===47){const r=saveScore(storage(),next.mode,next.elapsed);setScores(r);setRecord(r);}
  }
  function answer(event){event?.preventDefault();if(composing.current||performance.now()-compositionEnd.current<80)return;if(!input.trim()){setEmpty(true);inputRef.current?.focus();return;}act({type:'answer',value:input});}
  const card=game&&current(game);const isQuestion=game?.stage==='question';const wrong=game?.stage==='incorrect';const reveal=game?.stage==='reveal';const correct=game?.stage==='correct';
- return <main className={`app ${screen==='game'?game.stage:''}`}><Brand/>
+ return <main className={`app ${screen==='game'?game.stage:''}`}><GameMenu/><Brand/>
  {screen==='home'&&<section className="home" aria-labelledby="start-title"><p className="eyebrow">全国47都道府県 タイムトライアル</p><h2 id="start-title">何度でも、<br/>覚えるまで。</h2><p>都道府県と県庁所在地を、<br/>ひとつずつ自分の力で。</p><fieldset className="mode"><legend>出題モード</legend><label><input type="radio" name="mode" value="normal" checked={mode==='normal'} onChange={()=>setMode('normal')}/><span>都道府県 → 県庁所在地<small>「市」「区」まで答えよう</small></span></label><label><input type="radio" name="mode" value="reverse" checked={mode==='reverse'} onChange={()=>setMode('reverse')}/><span>県庁所在地 → 都道府県<small>逆向きに挑戦！</small></span></label></fieldset><div className="best"><Trophy weight="bold" aria-hidden="true"/><span>この端末の最短記録</span><strong>{scores.scores[mode]?formatTime(scores.scores[mode],true):'まだなし'}</strong></div>{!scores.available&&<p className="storage-note" role="status">この環境では記録を保存できません。ゲームはそのまま遊べます。</p>}<Button onClick={start}>はじめる</Button><p className="small-note">答えを確認している間は、タイマーが止まります。</p><details><summary>あそびかた・東京都の答え</summary><Rules/></details><details><summary>出典・ライセンス</summary><Sources/></details></section>}
  {screen==='game'&&<><div className="status"><strong>クリア {game.solved} / 47</strong><span className="clock"><Timer aria-hidden="true"/><span>{formatTime(elapsedTime(game,isQuestion?tick:performance.now()))}</span></span></div><div className="progress" role="progressbar" aria-label="自力で正解した都道府県" aria-valuemin={0} aria-valuemax={47} aria-valuenow={game.solved}><div style={{width:`${game.solved/47*100}%`}}/></div>
  <section ref={mainRef} tabIndex={-1} className="game-content" aria-label={isQuestion?'問題':wrong?'不正解':reveal?'答えの確認':correct?'正解':'全問クリア'}>
  {(isQuestion||wrong)&&<><h2 className="prompt">{game.mode==='reverse'?'この県庁所在地の都道府県は？':card.id===13?'都庁がある区は？':card.id===1?'道庁所在地は？':[26,27].includes(card.id)?'この府の府庁所在地は？':'この県の県庁所在地は？'}</h2><div className="question-card"><span className="card-rule"/><span className="card-label">{game.mode==='reverse'?'PREFECTURAL CAPITAL':'PREFECTURE'}</span><p className={(game.mode==='reverse'?card.capital:card.name).length>4?'long':''}>{game.mode==='reverse'?card.capital:card.name}</p></div><form onSubmit={answer}><label className="input-label" htmlFor="answer">{game.mode==='reverse'?'都道府県':card.id===13?'都庁がある区':'県庁所在地'}</label><input ref={inputRef} id="answer" name="answer" value={input} onChange={e=>{setInput(e.target.value);setEmpty(false);}} readOnly={wrong} aria-invalid={wrong||empty} aria-describedby={wrong?'wrong-feedback':'answer-hint'} placeholder={game.mode==='reverse'?'都道府県名を入力':'漢字で入力'} autoComplete="off" autoCorrect="off" spellCheck="false" enterKeyHint="done" onCompositionStart={()=>{composing.current=true;}} onCompositionEnd={()=>{composing.current=false;compositionEnd.current=performance.now();}} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();if(e.nativeEvent.isComposing||e.nativeEvent.keyCode===229||e.repeat||composing.current)return;answer(e);}}}/>
  {isQuestion&&<><p id="answer-hint" className="hint">{empty?'答えを入力してね。':game.mode==='reverse'?'「都」「道」「府」「県」まで入力してね。':card.id===13?'「区」まで入力してね。':card.id===11?'正式なひらがなと「市」まで入力してね。':'漢字と「市」まで入力してね。'}</p><Button type="submit">回答する</Button><button className="reveal-link" type="button" onClick={()=>act({type:'reveal'})}>わからないときは、答えを見る</button></>}
  </form>{wrong&&<div id="wrong-feedback" role="status"><h2 className="wrong-title"><XCircle aria-hidden="true"/>ざんねん！</h2><p className="wrong-copy">答えを確認して、<br/>あとでもう一度挑戦しよう。</p><Button onClick={()=>act({type:'reveal'})}>答えを見る</Button><p className="retry-note">見たカードは、あとでランダムに<br/>出題されます。</p></div>}</>}
- {(correct||reveal)&&<><h2 className={`result-title ${reveal?'learning':''}`}>{correct?<CheckCircle weight="bold" aria-hidden="true"/>:<BookOpen weight="bold" aria-hidden="true"/>}{correct?'正解！':'答えを確認'}</h2><p className="answer-caption">{game.mode==='reverse'?`${card.capital}が庁所在地の都道府県`:card.id===13?'東京都庁がある区':`${card.name}の県庁所在地`}</p><p className={`answer-title ${(game.mode==='reverse'?card.name:card.capital).length>4?'long':''}`}>{game.mode==='reverse'?card.name:card.capital}</p><figure className="map"><img src={asset(`maps/${card.id}.svg`)} alt={`日本の白地図。${card.name}だけを緑色で表示。沖縄は左上の別枠。`} width="1024" height="1024"/><figcaption>{card.name}</figcaption></figure><section className="specialties"><h3>{card.id===40?'福岡の特産品':`${card.name}の特産品・郷土の味`}</h3><div className="food-row">{card.specialties.map((name,i)=><React.Fragment key={name}>{i>0&&<span className="food-dot" aria-hidden="true">・</span>}<span>{card.id===40&&<img src={asset(i?'images/mentaiko.png':'images/strawberry.png')} alt=""/>}{name}</span></React.Fragment>)}</div></section>{card.id===13&&<p className="tokyo-note">{TOKYO_NOTE}</p>}{reveal&&<p className="learn-note">このカードは、あとでもう一度出題されます。</p>}<Button onClick={()=>act({type:'next'})}>{game.solved===47?'結果を見る':game.mode==='reverse'?'次の問題へ':'次の県へ'}</Button></>}
- {game.stage==='complete'&&<div className="complete-content"><Trophy className="big-trophy" weight="fill" aria-hidden="true"/><h2>全47問<br/>クリア！</h2><p>最後まで、自分の力で答えられたね。</p><div className="result-time"><span>解答タイム</span><strong>{formatTime(game.elapsed,true)}</strong></div>{record?.newBest&&<p className="record">この端末の最短記録を更新！</p>}{!record?.available&&<p className="storage-note">今回は記録を保存できませんでした。<br/>タイムはこの画面で確認できます。</p>}<p className="small-note">{game.mode==='normal'?'都道府県 → 県庁所在地':'県庁所在地 → 都道府県'}<br/>答えを見た回数：{game.seen}回</p><Button onClick={start}>もう一度挑戦</Button><button className="reveal-link" onClick={()=>{setScreen('home');setGame(null);gameRef.current=null;}}>モードを選びなおす</button></div>}
+ {(correct||reveal)&&<><h2 className={`result-title ${reveal?'learning':''}`}>{correct?<CheckCircle weight="bold" aria-hidden="true"/>:<BookOpen weight="bold" aria-hidden="true"/>}{correct?'正解！':'答えを確認'}</h2><p className="answer-caption">{game.mode==='reverse'?`${card.capital}が庁所在地の都道府県`:card.id===13?'東京都庁がある区':`${card.name}の県庁所在地`}</p><p className={`answer-title ${(game.mode==='reverse'?card.name:card.capital).length>4?'long':''}`}>{game.mode==='reverse'?card.name:card.capital}</p><figure className="map"><img src={asset(`maps/${card.id}.svg`)} alt={`日本の白地図。${card.name}だけを緑色で表示。沖縄は左上の別枠。`} width="1024" height="1024"/><figcaption>{card.name}</figcaption></figure><section className="specialties"><h3>{card.id===40?'福岡の特産品':`${card.name}の特産品・郷土の味`}</h3><div className="food-row">{card.specialties.map((name,i)=><React.Fragment key={name}>{i>0&&<span className="food-dot" aria-hidden="true">・</span>}<span>{card.id===40&&<img src={asset(i?'images/mentaiko.png':'images/strawberry.png')} alt=""/>}{name}</span></React.Fragment>)}</div></section>{card.id===13&&<p className="tokyo-note">{TOKYO_NOTE}</p>}{reveal&&<p className="learn-note">このカードは、あとでもう一度出題されます。</p>}<Button data-advance aria-keyshortcuts="Enter" onClick={()=>act({type:'next'})}>{game.solved===47?'結果を見る':game.mode==='reverse'?'次の問題へ':'次の県へ'}</Button><p className="keyboard-hint">Enterでも{game.solved===47?'結果へ':'次へ'}</p></>}
+ {game.stage==='complete'&&<div className="complete-content"><Trophy className="big-trophy" weight="fill" aria-hidden="true"/><h2>全47問<br/>クリア！</h2><p>最後まで、自分の力で答えられたね。</p><div className="result-time"><span>解答タイム</span><strong>{formatTime(game.elapsed,true)}</strong></div>{record?.newBest&&<p className="record">この端末の最短記録を更新！</p>}{!record?.available&&<p className="storage-note">今回は記録を保存できませんでした。<br/>タイムはこの画面で確認できます。</p>}<p className="small-note">{game.mode==='normal'?'都道府県 → 県庁所在地':'県庁所在地 → 都道府県'}<br/>答えを見た回数：{game.seen}回</p><ResultShare game={game}/><Button onClick={start}>もう一度挑戦</Button><button className="reveal-link" onClick={()=>{setScreen('home');setGame(null);gameRef.current=null;}}>モードを選びなおす</button></div>}
  </section><footer className="game-footer">全国47都道府県 タイムトライアル</footer><div className="game-meta"><span>{isQuestion?'解答中だけ計測':game.stage==='complete'?'計測終了':'確認中はタイマー停止'}</span>{(correct||reveal)&&<a href={card.foodSource} target="_blank" rel="noreferrer">この地域の出典</a>}<button onClick={()=>{if(window.confirm('このゲームを終了して、最初に戻りますか？途中の記録は残りません。')){setScreen('home');setGame(null);gameRef.current=null;}}}><ArrowUUpLeft aria-hidden="true"/>最初に戻る</button></div></>}
  </main>;
 }

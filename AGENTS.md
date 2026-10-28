@@ -15,3 +15,9 @@ This is a production mobile-friendly browser game deployed to GitHub Pages, not 
 Keep all 47 strict answers and original vector map paths valid. Tokyo asks for the ward containing the metropolitan government: 新宿区, with the explanatory note. Never remove a card from the unsolved queue after revealing its answer. Only self-solved answers count toward 47. Time confirmation states consistently as paused. Keep normal and reverse records separate.
 
 Run npm test, npm run test:e2e, npm run build for game changes. Browser tests use Chromium and WebKit. Design evidence and iteration notes are in design-qa.md. Work screenshots are private QA artifacts and are not published as part of the site.
+
+# Approved improvements (2026-10-28)
+
+Preserve the game design and rules while adding user-initiated result sharing, Enter to advance confirmed answers on PC, and favicon/home-screen icons. Never auto-post. Prefer the OS share sheet, then clipboard/manual copying. IME confirmation, held Enter and the answer's own key event must not advance a second screen. Keep icons self-hosted and avoid new services or credentials.
+
+The user also approved migration to `4roz.com/games/ken/` with the existing game design preserved. Keep links to よろずコム / よろずミニゲーム inside the small hamburger menu only. Do not add the host site's large header or redesign the game to match it. Keep relative asset and manifest paths; the GitHub repository/site remain available.

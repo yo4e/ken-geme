@@ -1,3 +1,4 @@
+import {resultShareData,shareText} from '../src/share.js';
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
 import {prefectures} from '../src/data.js';
 import {newGame,current,transition,expected,elapsedTime,readScores,saveScore,SCORE_KEY} from '../src/game.js';
@@ -30,3 +31,8 @@ test('mode-specific best times, reload and unavailable/corrupt storage',()=>{
  value='{';assert.deepEqual(readScores(st),{scores:{},available:false});value='{"normal":-2,"reverse":"bad"}';assert.deepEqual(readScores(st).scores,{});
 });
 test('initial and repeated games are shuffled permutations',()=>{const a=newGame('normal',0,()=>0),b=newGame('normal',0,()=>.5);assert.equal(new Set(a.queue).size,47);assert.notDeepEqual(a.queue,b.queue);});
+test('share text uses the finished run, mode, timing rule and deployment directory',()=>{
+ const data=resultShareData({mode:'reverse',elapsed:123456,seen:3},'https://example.com/games/ken/?old=1#result');
+ assert.equal(data.url,'https://example.com/games/ken/');
+ assert.match(data.text,/県庁所在地 → 都道府県/);assert.match(data.text,/02:03\.4/);assert.match(data.text,/確認中は計測停止/);assert.match(data.text,/答えを見た回数：3回/);assert.ok(shareText(data).endsWith(data.url));
+});

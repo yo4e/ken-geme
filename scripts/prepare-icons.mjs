@@ -1,0 +1,31 @@
+// Reuse the app's licensed font and Phosphor mark; no external image service.
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {Seal} from '@phosphor-icons/react';
+import {chromium} from '@playwright/test';
+import sharp from 'sharp';
+import {mkdirSync,writeFileSync} from 'node:fs';
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1024,height:1024}});
+await page.goto(process.env.ICON_PREVIEW_URL||'http://127.0.0.1:4178/');
+const seal=renderToStaticMarkup(React.createElement(Seal,{weight:'fill',size:150}));
+await page.evaluate(seal=>{
+ document.body.innerHTML=`<div id="app-icon"><div id="icon-art"><span>県</span>${seal}</div></div>`;
+ const style=document.createElement('style');
+ style.textContent='body{margin:0}#app-icon{width:1024px;height:1024px;overflow:hidden;background:#f8f7f2}#icon-art{position:relative;width:100%;height:100%;transform-origin:center}#icon-art span{position:absolute;left:152px;top:130px;width:720px;height:800px;line-height:1;font-family:"Noto Sans JP Variable";font-weight:950;font-size:720px;color:#071f36;text-align:center}#icon-art svg{position:absolute;top:130px;right:130px;color:#ff6419}';
+ document.head.append(style);
+},seal);
+await page.evaluate(()=>document.fonts.ready);
+mkdirSync('public/icons',{recursive:true});mkdirSync('work/icons',{recursive:true});
+const source=await page.locator('#app-icon').screenshot({path:'work/icons/source.png'});
+for(const size of [16,32,48])await sharp(source).resize(size,size).png().toFile(`public/icons/favicon-${size}.png`);
+for(const size of [192,512])await sharp(source).resize(size,size).png().toFile(`public/icons/icon-${size}.png`);
+await sharp(source).resize(180,180).png().toFile('public/apple-touch-icon.png');
+await page.locator('#icon-art').evaluate(el=>{el.style.transform='scale(.8)';});
+await sharp(await page.locator('#app-icon').screenshot()).resize(512,512).png().toFile('public/icons/icon-maskable-512.png');
+const sizes=[16,32,48],images=await Promise.all(sizes.map(size=>sharp(source).resize(size,size).png().toBuffer()));
+const header=Buffer.alloc(6+16*images.length);header.writeUInt16LE(1,2);header.writeUInt16LE(images.length,4);
+let offset=header.length;images.forEach((image,i)=>{const entry=6+i*16;header[entry]=sizes[i];header[entry+1]=sizes[i];header.writeUInt16LE(1,entry+4);header.writeUInt16LE(32,entry+6);header.writeUInt32LE(image.length,entry+8);header.writeUInt32LE(offset,entry+12);offset+=image.length;});
+writeFileSync('public/favicon.ico',Buffer.concat([header,...images]));
+await browser.close();
+console.log('Generated favicon, Apple touch icon, and 192/512px manifest icons.');
