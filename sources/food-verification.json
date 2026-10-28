@@ -1,0 +1,429 @@
+{
+  "checked": "2026-10-28",
+  "checks": [
+    {
+      "id": 1,
+      "name": "北海道",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/hokkaido.html",
+      "foods": [
+        "いももち"
+      ],
+      "verified": true
+    },
+    {
+      "id": 2,
+      "name": "青森県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/aomori.html",
+      "foods": [
+        "せんべい汁"
+      ],
+      "verified": true
+    },
+    {
+      "id": 3,
+      "name": "岩手県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/iwate.html",
+      "foods": [
+        "がんづき"
+      ],
+      "verified": true
+    },
+    {
+      "id": 4,
+      "name": "宮城県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/miyagi.html",
+      "foods": [
+        "ずんだ餅"
+      ],
+      "verified": true
+    },
+    {
+      "id": 5,
+      "name": "秋田県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/akita.html",
+      "foods": [
+        "きりたんぽ"
+      ],
+      "verified": true
+    },
+    {
+      "id": 6,
+      "name": "山形県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/yamagata.html",
+      "foods": [
+        "笹巻き"
+      ],
+      "verified": true
+    },
+    {
+      "id": 7,
+      "name": "福島県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/fukushima.html",
+      "foods": [
+        "いかにんじん"
+      ],
+      "verified": true
+    },
+    {
+      "id": 8,
+      "name": "茨城県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/ibaraki.html",
+      "foods": [
+        "干しいも"
+      ],
+      "verified": true
+    },
+    {
+      "id": 9,
+      "name": "栃木県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/tochigi.html",
+      "foods": [
+        "しもつかれ"
+      ],
+      "verified": true
+    },
+    {
+      "id": 10,
+      "name": "群馬県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/gunma.html",
+      "foods": [
+        "焼きまんじゅう"
+      ],
+      "verified": true
+    },
+    {
+      "id": 11,
+      "name": "埼玉県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/saitama.html",
+      "foods": [
+        "いがまんじゅう"
+      ],
+      "verified": true
+    },
+    {
+      "id": 12,
+      "name": "千葉県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/chiba.html",
+      "foods": [
+        "落花生味噌"
+      ],
+      "verified": true
+    },
+    {
+      "id": 13,
+      "name": "東京都",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/tokyo.html",
+      "foods": [
+        "もんじゃ焼き"
+      ],
+      "verified": true
+    },
+    {
+      "id": 14,
+      "name": "神奈川県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/kanagawa.html",
+      "foods": [
+        "かまぼこ"
+      ],
+      "verified": true
+    },
+    {
+      "id": 15,
+      "name": "新潟県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/niigata.html",
+      "foods": [
+        "笹団子"
+      ],
+      "verified": true
+    },
+    {
+      "id": 16,
+      "name": "富山県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/toyama.html",
+      "foods": [
+        "ます寿司"
+      ],
+      "verified": true
+    },
+    {
+      "id": 17,
+      "name": "石川県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/ishikawa.html",
+      "foods": [
+        "かぶらずし"
+      ],
+      "verified": true
+    },
+    {
+      "id": 18,
+      "name": "福井県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/fukui.html",
+      "foods": [
+        "へしこ"
+      ],
+      "verified": true
+    },
+    {
+      "id": 19,
+      "name": "山梨県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/yamanasi.html",
+      "foods": [
+        "ほうとう"
+      ],
+      "verified": true
+    },
+    {
+      "id": 20,
+      "name": "長野県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/nagano.html",
+      "foods": [
+        "おやき"
+      ],
+      "verified": true
+    },
+    {
+      "id": 21,
+      "name": "岐阜県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/gifu.html",
+      "foods": [
+        "五平餅"
+      ],
+      "verified": true
+    },
+    {
+      "id": 22,
+      "name": "静岡県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/shizuoka.html",
+      "foods": [
+        "山葵漬け"
+      ],
+      "verified": true
+    },
+    {
+      "id": 23,
+      "name": "愛知県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/aichi.html",
+      "foods": [
+        "きしめん"
+      ],
+      "verified": true
+    },
+    {
+      "id": 24,
+      "name": "三重県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/mie.html",
+      "foods": [
+        "伊勢うどん"
+      ],
+      "verified": true
+    },
+    {
+      "id": 25,
+      "name": "滋賀県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/shiga.html",
+      "foods": [
+        "ふなずし"
+      ],
+      "verified": true
+    },
+    {
+      "id": 26,
+      "name": "京都府",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/kyoto.html",
+      "foods": [
+        "千枚漬け"
+      ],
+      "verified": true
+    },
+    {
+      "id": 27,
+      "name": "大阪府",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/osaka.html",
+      "foods": [
+        "たこ焼き"
+      ],
+      "verified": true
+    },
+    {
+      "id": 28,
+      "name": "兵庫県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/hyogo.html",
+      "foods": [
+        "イカナゴのくぎ煮"
+      ],
+      "verified": true
+    },
+    {
+      "id": 29,
+      "name": "奈良県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/nara.html",
+      "foods": [
+        "柿の葉寿司"
+      ],
+      "verified": true
+    },
+    {
+      "id": 30,
+      "name": "和歌山県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/wakayama.html",
+      "foods": [
+        "梅干し"
+      ],
+      "verified": true
+    },
+    {
+      "id": 31,
+      "name": "鳥取県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/tottori.html",
+      "foods": [
+        "とうふちくわ"
+      ],
+      "verified": true
+    },
+    {
+      "id": 32,
+      "name": "島根県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/shimane.html",
+      "foods": [
+        "出雲そば"
+      ],
+      "verified": true
+    },
+    {
+      "id": 33,
+      "name": "岡山県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/okayama.html",
+      "foods": [
+        "柚餅子"
+      ],
+      "verified": true
+    },
+    {
+      "id": 34,
+      "name": "広島県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/hiroshima.html",
+      "foods": [
+        "お好み焼き"
+      ],
+      "verified": true
+    },
+    {
+      "id": 35,
+      "name": "山口県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/yamaguchi.html",
+      "foods": [
+        "瓦そば"
+      ],
+      "verified": true
+    },
+    {
+      "id": 36,
+      "name": "徳島県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/tokushima.html",
+      "foods": [
+        "そば米雑炊"
+      ],
+      "verified": true
+    },
+    {
+      "id": 37,
+      "name": "香川県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/kagawa.html",
+      "foods": [
+        "しょうゆ豆"
+      ],
+      "verified": true
+    },
+    {
+      "id": 38,
+      "name": "愛媛県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/ehime.html",
+      "foods": [
+        "じゃこ天"
+      ],
+      "verified": true
+    },
+    {
+      "id": 39,
+      "name": "高知県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/kochi.html",
+      "foods": [
+        "かつおのたたき"
+      ],
+      "verified": true
+    },
+    {
+      "id": 40,
+      "name": "福岡県",
+      "source": "https://www.pref.fukuoka.lg.jp/contents/tiikisigenn.html",
+      "foods": [
+        "あまおう",
+        "辛子明太子"
+      ],
+      "verified": true
+    },
+    {
+      "id": 41,
+      "name": "佐賀県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/saga.html",
+      "foods": [
+        "呉豆腐"
+      ],
+      "verified": true
+    },
+    {
+      "id": 42,
+      "name": "長崎県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/nagasaki.html",
+      "foods": [
+        "かんころ餅"
+      ],
+      "verified": true
+    },
+    {
+      "id": 43,
+      "name": "熊本県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/kumamoto.html",
+      "foods": [
+        "からし蓮根"
+      ],
+      "verified": true
+    },
+    {
+      "id": 44,
+      "name": "大分県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/oita.html",
+      "foods": [
+        "やせうま"
+      ],
+      "verified": true
+    },
+    {
+      "id": 45,
+      "name": "宮崎県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/miyazaki.html",
+      "foods": [
+        "チキン南蛮"
+      ],
+      "verified": true
+    },
+    {
+      "id": 46,
+      "name": "鹿児島県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/kagoshima.html",
+      "foods": [
+        "かるかん"
+      ],
+      "verified": true
+    },
+    {
+      "id": 47,
+      "name": "沖縄県",
+      "source": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/okinawa.html",
+      "foods": [
+        "サーターアンダーギー"
+      ],
+      "verified": true
+    }
+  ]
+}
