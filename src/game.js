@@ -35,12 +35,15 @@ export function formatTime(ms,precise=false){
  return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}${precise?'.'+tenths%10:''}`;
 }
 export function readScores(storage){
- try{
-  const data=JSON.parse(storage.getItem(SCORE_KEY)||'{}');
-  const scores={};
-  for(const mode of ['normal','reverse'])if(typeof data?.[mode]==='number' && Number.isFinite(data[mode]) && data[mode]>0)scores[mode]=data[mode];
-  return {scores,available:true};
- }catch{return {scores:{},available:false};}
+ let raw;
+ try{raw=storage.getItem(SCORE_KEY);}
+ catch{return {scores:{},available:false};}
+ let data;
+ try{data=JSON.parse(raw||'{}');}
+ catch{return {scores:{},available:true};} // The next valid result can replace a corrupt record.
+ const scores={};
+ for(const mode of ['normal','reverse'])if(typeof data?.[mode]==='number' && Number.isFinite(data[mode]) && data[mode]>0)scores[mode]=data[mode];
+ return {scores,available:true};
 }
 export function saveScore(storage,mode,time){
  const result=readScores(storage);
