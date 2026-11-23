@@ -28,7 +28,15 @@ test('mode-specific best times, reload and unavailable/corrupt storage',()=>{
  let value=null;const st={getItem:()=>value,setItem:(k,v)=>{assert.equal(k,SCORE_KEY);value=v;}};
  assert.equal(saveScore(st,'normal',9000).newBest,true);assert.equal(saveScore(st,'normal',10000).newBest,false);saveScore(st,'reverse',8000);assert.deepEqual(readScores(st).scores,{normal:9000,reverse:8000});saveScore(st,'normal',7000);assert.equal(readScores(st).scores.normal,7000);
  assert.equal(saveScore(null,'normal',1000).available,false);assert.equal(saveScore({getItem:()=>null,setItem:()=>{throw Error('quota')}},'normal',1000).available,false);
- value='{';assert.deepEqual(readScores(st),{scores:{},available:false});value='{"normal":-2,"reverse":"bad"}';assert.deepEqual(readScores(st).scores,{});
+ value='{"normal":-2,"reverse":"bad"}';assert.deepEqual(readScores(st).scores,{});
+});
+test('a malformed best record is replaced on the next valid save',()=>{
+ let value='{';
+ const st={getItem:()=>value,setItem:(key,next)=>{assert.equal(key,SCORE_KEY);value=next;}};
+ assert.deepEqual(readScores(st),{scores:{},available:true});
+ assert.equal(value,'{'); // Reading does not change storage.
+ assert.deepEqual(saveScore(st,'normal',7500),{scores:{normal:7500},available:true,newBest:true});
+ assert.deepEqual(readScores(st),{scores:{normal:7500},available:true});
 });
 test('initial and repeated games are shuffled permutations',()=>{const a=newGame('normal',0,()=>0),b=newGame('normal',0,()=>.5);assert.equal(new Set(a.queue).size,47);assert.notDeepEqual(a.queue,b.queue);});
 test('share text uses the finished run, mode, timing rule and deployment directory',()=>{
